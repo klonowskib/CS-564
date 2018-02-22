@@ -77,7 +77,6 @@ def biderator(item):
             if bid is not None:
                 for key, value in bid.items():
                     bidder = value.get("Bidder")
-
                     rating = bidder.get("Rating")
                     location = bidder.get("Location")
                     if location is None:
@@ -87,7 +86,16 @@ def biderator(item):
                     if country is None:
                         country = "NULL"
 
-                    entry = location + "|" + country + "|" + id + "|" + rating
+                    entry = location + columnSeparator + country + columnSeparator + id + columnSeparator + rating
+                    print entry
+                for key, value in bid.items():
+                    bidder = value.get("Bidder").get("UserID")
+                    time = value.get("Time")
+                    amount = value.get("Amount")
+                    item = value.get("ItemID")
+                    if item is None:
+                        item = "NULL"
+                    entry = bidder + columnSeparator + time + columnSeparator + amount + columnSeparator + item
                     print entry
 """
 Parses a single json file. Currently, there's a loop that iterates over each
@@ -111,6 +119,7 @@ def parseJson(json_file):
             the SQL tables based on your relation design
             """
             biderator(item)
+
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
