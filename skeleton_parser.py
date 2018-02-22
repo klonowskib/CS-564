@@ -84,7 +84,6 @@ def parseJson(json_file):
             given `json_file' and generate the necessary .dat files to generate
             the SQL tables based on your relation design
             """
-            '''entries = item.split()'''
             items_file = open('items.dat', 'w')
             sellers_file = open('sellers.dat', 'w')
             bidders_file = open('bidders.dat', 'w')
@@ -92,8 +91,13 @@ def parseJson(json_file):
             data = load(open(json_file))
             '''pprint(data)'''
             for entry in data["Items"]:
-                pprint(entry.get("ItemID "))
-            '''print item'''
+                if entry is not None:
+                    bid = entry.get("Bids", {})
+                    if bid is not None:
+                        for key, value in bid[0].items():
+                            bidder = value.get("Bidder")
+                            pprint (bidder)
+
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
