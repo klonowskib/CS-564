@@ -25,8 +25,10 @@ Happy parsing!
 """
 
 import sys
-from json import loads
+from json import *
 from re import sub
+from pprint import pprint
+
 
 columnSeparator = "|"
 
@@ -82,12 +84,16 @@ def parseJson(json_file):
             given `json_file' and generate the necessary .dat files to generate
             the SQL tables based on your relation design
             """
+            '''entries = item.split()'''
             items_file = open('items.dat', 'w')
             sellers_file = open('sellers.dat', 'w')
             bidders_file = open('bidders.dat', 'w')
             bids_file = open('bids.dat', 'w')
-            print item
-
+            data = load(open(json_file))
+            '''pprint(data)'''
+            for entry in data["Items"]:
+                pprint(entry.get("ItemID "))
+            '''print item'''
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
