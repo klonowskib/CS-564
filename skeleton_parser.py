@@ -70,6 +70,25 @@ def transformDollar(money):
         return money
     return sub(r'[^\d.]', '', money)
 
+def biderator(item):
+    bids = item.get("Bids", {})
+    if bids is not None:
+        for bid in bids:
+            if bid is not None:
+                for key, value in bid.items():
+                    bidder = value.get("Bidder")
+
+                    rating = bidder.get("Rating")
+                    location = bidder.get("Location")
+                    if location is None:
+                        location = "NULL"
+                    id = bidder.get("UserID")
+                    country = bidder.get("Country")
+                    if country is None:
+                        country = "NULL"
+
+                    entry = location + "|" + country + "|" + id + "|" + rating
+                    print entry
 """
 Parses a single json file. Currently, there's a loop that iterates over each
 item in the data set. Your job is to extend this functionality to create all
@@ -78,26 +97,20 @@ of the necessary SQL tables for your database.
 def parseJson(json_file):
     with open(json_file, 'r') as f:
         items = loads(f.read())['Items'] # creates a Python dictionary of Items for the supplied json file
+        data = load(open(json_file))
+        'pprint(data)'
+        items_file = open('items.dat', 'w')
+        sellers_file = open('sellers.dat', 'w')
+        bidders_file = open('bidders.dat', 'w')
+        bids_file = open('bids.dat', 'w')
+
         for item in items:
             """
             TODO: traverse the items dictionary to extract information from the
             given `json_file' and generate the necessary .dat files to generate
             the SQL tables based on your relation design
             """
-            items_file = open('items.dat', 'w')
-            sellers_file = open('sellers.dat', 'w')
-            bidders_file = open('bidders.dat', 'w')
-            bids_file = open('bids.dat', 'w')
-            data = load(open(json_file))
-            '''pprint(data)'''
-            for entry in data["Items"]:
-                if entry is not None:
-                    bid = entry.get("Bids", {})
-                    if bid is not None:
-                        for key, value in bid[0].items():
-                            bidder = value.get("Bidder")
-                            pprint (bidder)
-
+            biderator(item)
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
