@@ -106,7 +106,8 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         bidder = value.get("Bidder").get("UserID")
                         time = value.get("Time")
                         amount = value.get("Amount")
-                        entry = bidder + columnSeparator + time + columnSeparator + amount + columnSeparator + id
+                        entry = (bidder + columnSeparator + transformDttm(time) + columnSeparator
+                                + transformDollar(amount)+ columnSeparator + id)
                         bid_set.add(entry)
 
                         bidder = value.get("Bidder")
