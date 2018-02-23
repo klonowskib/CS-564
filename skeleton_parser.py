@@ -134,10 +134,14 @@ def parseJson(json_file):
         items = loads(f.read())['Items'] # creates a Python dictionary of Items for the supplied json file
         data = load(open(json_file))
         'pprint(data)'
-        items_file = open('items.dat', 'w')
-        sellers_file = open('sellers.dat', 'w')
-        bidders_file = open('bidders.dat', 'w')
-        bids_file = open('bids.dat', 'w')
+        open('items.dat', 'w').close()
+        open('sellers.dat', 'w').close()
+        open('bidders.dat', 'w').close()
+        open('bids.dat', 'w').close()
+        items_file = open('items.dat', 'a')
+        sellers_file = open('sellers.dat', 'a')
+        bidders_file = open('bidders.dat', 'a')
+        bids_file = open('bids.dat', 'a')
         bidder_set = set()
         seller_set = set()
         item_set = set()
@@ -149,9 +153,11 @@ def parseJson(json_file):
             the SQL tables based on your relation design
             """
             item_iterator(item, seller_set, bidder_set, bid_set,item_set)
-            for item1 in bid_set:
-                print item1
-                pass
+
+        for item1 in bid_set:
+            print item1
+            bids_file.write(item1 + '\n')
+            pass
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
