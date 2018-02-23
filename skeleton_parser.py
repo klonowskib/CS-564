@@ -111,6 +111,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
     if bids is not None:
         for bid in bids:
             if bid is not None:
+
                 for key, value in bid.items():
                     for key, value in bid.items():
                         bidder = value.get("Bidder").get("UserID")
