@@ -1,4 +1,3 @@
-
 """
 FILE: skeleton_parser.py
 ------------------
@@ -24,37 +23,44 @@ you; the rest is up to you!
 Happy parsing!
 """
 
+import locale
 import sys
 from json import *
-from re import sub
 from pprint import pprint
-import locale
-
+from re import sub
 
 columnSeparator = "|"
 
 # Dictionary of months used for date transformation
-MONTHS = {'Jan':'01','Feb':'02','Mar':'03','Apr':'04','May':'05','Jun':'06',\
-        'Jul':'07','Aug':'08','Sep':'09','Oct':'10','Nov':'11','Dec':'12'}
+MONTHS = {'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06', \
+          'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'}
 
 """
 Returns true if a file ends in .json
 """
+
+
 def isJson(f):
     return len(f) > 5 and f[-5:] == '.json'
+
 
 """
 Converts month to a number, e.g. 'Dec' to '12'
 """
+
+
 def transformMonth(mon):
     if mon in MONTHS:
         return MONTHS[mon]
     else:
         return mon
 
+
 """
 Transforms a timestamp from Mon-DD-YY HH:MM:SS to YYYY-MM-DD HH:MM:SS
 """
+
+
 def transformDttm(dttm):
     dttm = dttm.strip().split(' ')
     dt = dttm[0].split('-')
@@ -62,14 +68,17 @@ def transformDttm(dttm):
     date += transformMonth(dt[0]) + '-' + dt[1]
     return date + ' ' + dttm[1]
 
+
 """
 Transform a dollar value amount from a string like $3,453.23 to XXXXX.xx
 """
+
 
 def transformDollar(money):
     if money == None or len(money) == 0:
         return money
     return sub(r'[^\d.]', '', money)
+
 
 def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
     id = item.get("ItemID")
@@ -90,10 +99,11 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
     if description is None:
         description = "NULL"
 
-    item_entry = (id + columnSeparator + name + columnSeparator + category+ columnSeparator + currently
-        + columnSeparator + buy + columnSeparator + first + columnSeparator + num_bids
-        + columnSeparator + seller_entry.get("UserID")  + columnSeparator + location + columnSeparator + country
-        + columnSeparator + started + columnSeparator + ends + columnSeparator + description)
+    item_entry = (id + columnSeparator + name + columnSeparator + category + columnSeparator + currently
+                  + columnSeparator + buy + columnSeparator + first + columnSeparator + num_bids
+                  + columnSeparator + seller_entry.get(
+        "UserID") + columnSeparator + location + columnSeparator + country
+                  + columnSeparator + started + columnSeparator + ends + columnSeparator + description)
 
     seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating")
     seller_set.add(seller_entry)
@@ -107,7 +117,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         time = value.get("Time")
                         amount = value.get("Amount")
                         entry = (bidder + columnSeparator + transformDttm(time) + columnSeparator
-                                + transformDollar(amount)+ columnSeparator + id)
+                                 + transformDollar(amount) + columnSeparator + id)
                         bid_set.add(entry)
                         bidder = value.get("Bidder")
                         rating = bidder.get("Rating")
@@ -124,14 +134,17 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
 
     item_set.add(item_entry)
 
+
 """
 Parses a single json file. Currently, there's a loop that iterates over each
 item in the data set. Your job is to extend this functionality to create all
 of the necessary SQL tables for your database.
 """
+
+
 def parseJson(json_file):
     with open(json_file, 'r') as f:
-        items = loads(f.read())['Items'] # creates a Python dictionary of Items for the supplied json file
+        items = loads(f.read())['Items']  # creates a Python dictionary of Items for the supplied json file
         data = load(open(json_file))
         'pprint(data)'
         open('items.dat', 'w').close()
@@ -152,7 +165,7 @@ def parseJson(json_file):
             given `json_file' and generate the necessary .dat files to generate
             the SQL tables based on your relation design
             """
-            item_iterator(item, seller_set, bidder_set, bid_set,item_set)
+            item_iterator(item, seller_set, bidder_set, bid_set, item_set)
         for item1 in bidder_set:
             bidders_file.write(item1 + '\n')
             pass
@@ -164,10 +177,14 @@ def parseJson(json_file):
         for item1 in item_set:
             items_file.write(item1 + '\n')
             pass
+
+
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
 """
+
+
 def main(argv):
     if len(argv) < 2:
         print >> sys.stderr, 'Usage: python skeleton_json_parser.py <path to json files>'
@@ -177,6 +194,7 @@ def main(argv):
         if isJson(f):
             parseJson(f)
             print ("Success parsing " + f)
+
 
 if __name__ == '__main__':
     main(sys.argv)
