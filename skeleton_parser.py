@@ -153,10 +153,16 @@ def parseJson(json_file):
             the SQL tables based on your relation design
             """
             item_iterator(item, seller_set, bidder_set, bid_set,item_set)
-
+        for item1 in bidder_set:
+            bidders_file.write(item1 + '\n')
+            pass
+        for item1 in seller_set:
+            sellers_file.write(item1 + '\n')
+            pass
         for item1 in bid_set:
-            print item1
             bids_file.write(item1 + '\n')
+        for item1 in item_set:
+            items_file.write(item1 + '\n')
             pass
 """
 Loops through each json files provided on the command line and passes each file
