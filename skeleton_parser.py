@@ -135,6 +135,8 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
 
     item_set.add(item_entry)
 
+    return bidder_set
+
 
 """
 Parses a single json file. Currently, there's a loop that iterates over each
@@ -143,23 +145,10 @@ of the necessary SQL tables for your database.
 """
 
 
-def parseJson(json_file):
+def parseJson(json_file, seller_set, bidder_set, bid_set, item_set):
     with open(json_file, 'r') as f:
         items = loads(f.read())['Items']  # creates a Python dictionary of Items for the supplied json file
-        data = load(open(json_file))
-        'pprint(data)'
-        open('items.dat', 'w').close()
-        open('sellers.dat', 'w').close()
-        open('bidders.dat', 'w').close()
-        open('bids.dat', 'w').close()
-        items_file = open('items.dat', 'a')
-        sellers_file = open('sellers.dat', 'a')
-        bidders_file = open('bidders.dat', 'a')
-        bids_file = open('bids.dat', 'a')
-        bidder_set = set()
-        seller_set = set()
-        item_set = set()
-        bid_set = set()
+
         for item in items:
             """
             TODO: traverse the items dictionary to extract information from the
@@ -167,17 +156,9 @@ def parseJson(json_file):
             the SQL tables based on your relation design
             """
             item_iterator(item, seller_set, bidder_set, bid_set, item_set)
-        for item1 in bidder_set:
-            bidders_file.write(item1 + '\n')
-            pass
-        for item1 in seller_set:
-            sellers_file.write(item1 + '\n')
-            pass
-        for item1 in bid_set:
-            bids_file.write(item1 + '\n')
-        for item1 in item_set:
-            items_file.write(item1 + '\n')
-            pass
+
+
+
 
 
 """
@@ -191,10 +172,34 @@ def main(argv):
         print >> sys.stderr, 'Usage: python skeleton_json_parser.py <path to json files>'
         sys.exit(1)
     # loops over all .json files in the argument
+    open('items.dat', 'w').close()
+    open('sellers.dat', 'w').close()
+    open('bidders.dat', 'w').close()
+    open('bids.dat', 'w').close()
+    items_file = open('items.dat', 'a')
+    sellers_file = open('sellers.dat', 'a')
+    bidders_file = open('bidders.dat', 'a')
+    bids_file = open('bids.dat', 'a')
+    bidder_set = set()
+    seller_set = set()
+    item_set = set()
+    bid_set = set()
     for f in argv[1:]:
         if isJson(f):
-            parseJson(f)
+            parseJson(f, seller_set, bidder_set, bid_set, item_set)
             print ("Success parsing " + f)
+    for item1 in bidder_set:
+        bidders_file.write(item1 + '\n')
+        pass
+    for item1 in seller_set:
+        sellers_file.write(item1 + '\n')
+        pass
+    for item1 in bid_set:
+        bids_file.write(item1 + '\n')
+    for item1 in item_set:
+        items_file.write(item1 + '\n')
+        pass
+
 
 
 if __name__ == '__main__':
