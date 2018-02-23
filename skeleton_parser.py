@@ -151,6 +151,7 @@ def parseJson(json_file):
             TODO: traverse the items dictionary to extract information from the
             given `json_file' and generate the necessary .dat files to generate
             the SQL tables based on your relation design
+            
             """
             item_iterator(item, seller_set, bidder_set, bid_set,item_set)
 
