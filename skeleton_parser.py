@@ -71,27 +71,6 @@ def transformDollar(money):
         return money
     return sub(r'[^\d.]', '', money)
 
-def biderator(item):
-    bidder_list = set()
-    bid_list = set()
-    bids = item.get("Bids", {})
-    if bids is not None:
-        for bid in bids:
-            if bid is not None:
-                for key, value in bid.items():
-                    bidder = value.get("Bidder")
-                    rating = bidder.get("Rating")
-                    location = bidder.get("Location")
-                    if location is None:
-                        location = "NULL"
-                    id = bidder.get("UserID")
-                    country = bidder.get("Country")
-                    if country is None:
-                        country = "NULL"
-                    entry = location + columnSeparator + country + columnSeparator + id + columnSeparator + rating
-                    bidder_list.add(entry)
-    return bidder_list
-
 def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
     id = item.get("ItemID")
     name = item.get("Name")
@@ -101,7 +80,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
         buy = "NULL"
     first = item.get("First_Bid")
     currently = item.get("Currently")
-    seller = ''.join(item.get("Seller"))
+    seller_entry = item.get("Seller")
     num_bids = item.get("Number_of_Bids")
     location = item.get("Location")
     country = item.get("Country")
@@ -113,9 +92,11 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
 
     item_entry = (id + columnSeparator + name + columnSeparator + category+ columnSeparator + currently
         + columnSeparator + buy + columnSeparator + first + columnSeparator + num_bids
-        + columnSeparator + seller  + columnSeparator + location + columnSeparator + country + columnSeparator + started
-        + columnSeparator + ends + columnSeparator + description)
+        + columnSeparator + seller_entry.get("UserID")  + columnSeparator + location + columnSeparator + country
+        + columnSeparator + started + columnSeparator + ends + columnSeparator + description)
 
+    seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating")
+    seller_set.add(seller_entry)
     bids = item.get("Bids", {})
     if bids is not None:
         for bid in bids:
@@ -127,10 +108,20 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         amount = value.get("Amount")
                         entry = bidder + columnSeparator + time + columnSeparator + amount + columnSeparator + id
                         bid_set.add(entry)
-    item_set.add(item_entry)
-    seller_set.add(seller)
-    bidder_set.union(biderator(item))
 
+                        bidder = value.get("Bidder")
+                        rating = bidder.get("Rating")
+                        location = bidder.get("Location")
+                        if location is None:
+                            location = "NULL"
+                        bidder_id = bidder.get("UserID")
+                        country = bidder.get("Country")
+                        if country is None:
+                            country = "NULL"
+                        entry = location + columnSeparator + country + columnSeparator + bidder_id + columnSeparator + rating
+                        bidder_set.add(entry)
+
+    item_set.add(item_entry)
 
 """
 Parses a single json file. Currently, there's a loop that iterates over each
@@ -157,12 +148,9 @@ def parseJson(json_file):
             the SQL tables based on your relation design
             """
             item_iterator(item, seller_set, bidder_set, bid_set,item_set)
-            for item_1 in bid_set:
-                print item_1
-
-
-
-
+            for item1 in bid_set:
+                print item1
+                pass
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
