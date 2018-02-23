@@ -99,11 +99,11 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
     if description is None:
         description = "NULL"
 
-    item_entry = (id + columnSeparator + name + columnSeparator + category + columnSeparator + currently
-                  + columnSeparator + buy + columnSeparator + first + columnSeparator + num_bids
+    item_entry = (id + columnSeparator + name + columnSeparator + category + columnSeparator + transformDollar(currently)
+                  + columnSeparator + transformDollar(buy) + columnSeparator + transformDollar(first) + columnSeparator + num_bids
                   + columnSeparator + seller_entry.get(
         "UserID") + columnSeparator + location + columnSeparator + country
-                  + columnSeparator + started + columnSeparator + ends + columnSeparator + description)
+                  + columnSeparator + transformDttm(started) + columnSeparator + transformDttm(ends) + columnSeparator + description)
 
     seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating")
     seller_set.add(seller_entry)
