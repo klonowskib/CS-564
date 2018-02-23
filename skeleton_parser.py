@@ -135,8 +135,6 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
 
     item_set.add(item_entry)
 
-    return bidder_set
-
 
 """
 Parses a single json file. Currently, there's a loop that iterates over each
