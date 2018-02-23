@@ -28,6 +28,7 @@ import sys
 from json import *
 from re import sub
 from pprint import pprint
+import locale
 
 
 columnSeparator = "|"
@@ -71,6 +72,8 @@ def transformDollar(money):
     return sub(r'[^\d.]', '', money)
 
 def biderator(item):
+    bidder_list = []
+    bid_list = []
     bids = item.get("Bids", {})
     if bids is not None:
         for bid in bids:
@@ -87,16 +90,21 @@ def biderator(item):
                         country = "NULL"
 
                     entry = location + columnSeparator + country + columnSeparator + id + columnSeparator + rating
-                    print entry
+                    bidder_list.append(entry)
+                    bidder_list = list(set(bidder_list))
                 for key, value in bid.items():
                     bidder = value.get("Bidder").get("UserID")
                     time = value.get("Time")
                     amount = value.get("Amount")
-                    item = value.get("ItemID")
-                    if item is None:
-                        item = "NULL"
-                    entry = bidder + columnSeparator + time + columnSeparator + amount + columnSeparator + item
-                    print entry
+                    entry = bidder + columnSeparator + time + columnSeparator + amount + columnSeparator
+                    bid_list.append(entry)
+                    bid_list = list(set(bid_list))
+
+    return bidder_list, bid_list
+
+def item_iterator(item):
+    return
+
 """
 Parses a single json file. Currently, there's a loop that iterates over each
 item in the data set. Your job is to extend this functionality to create all
@@ -118,7 +126,10 @@ def parseJson(json_file):
             given `json_file' and generate the necessary .dat files to generate
             the SQL tables based on your relation design
             """
-            biderator(item)
+            bidder_list, bid_list = biderator(item)
+            list(set(bid_list))
+            for bid in bid_list:
+                print  bid
 
 """
 Loops through each json files provided on the command line and passes each file
