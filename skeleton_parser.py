@@ -99,12 +99,14 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
     if description is None:
         description = "NULL"
 
-    item_entry = (id + columnSeparator + '"' + name + '"' + columnSeparator + '"' + category + '"' + columnSeparator
-                  + currently
-                  + columnSeparator + buy + columnSeparator + first + columnSeparator + num_bids
-                  + columnSeparator + seller_entry.get("UserID") + columnSeparator + '"' + location + '"'
-                  + columnSeparator + '"' + country + '"' + columnSeparator + started + columnSeparator + ends
-                  + columnSeparator + '"' + description + '"')
+    item_entry = (id + columnSeparator + name + columnSeparator + category + columnSeparator
+                  + transformDollar(currently)
+                  + columnSeparator + transformDollar(buy) + columnSeparator + transformDollar(first)
+                  + columnSeparator + num_bids
+                  + columnSeparator + seller_entry.get(
+        "UserID") + columnSeparator + location + columnSeparator + country
+                  + columnSeparator + transformDttm(started) + columnSeparator + transformDttm(ends)
+                  + columnSeparator + description)
 
     seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating")
     seller_set.add(seller_entry)
@@ -157,6 +159,9 @@ def parseJson(json_file, seller_set, bidder_set, bid_set, item_set):
             item_iterator(item, seller_set, bidder_set, bid_set, item_set)
 
 
+
+
+
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
@@ -195,6 +200,7 @@ def main(argv):
     for item1 in item_set:
         items_file.write(item1 + '\n')
         pass
+
 
 
 if __name__ == '__main__':
