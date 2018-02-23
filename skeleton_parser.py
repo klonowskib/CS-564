@@ -115,6 +115,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         if location is None:
                             location = "NULL"
                         bidder_id = bidder.get("UserID")
+
                         country = bidder.get("Country")
                         if country is None:
                             country = "NULL"
