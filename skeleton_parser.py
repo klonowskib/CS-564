@@ -100,13 +100,14 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
         description = "NULL"
 
     if name.find('"') != -1:
-        name =  '"' + name[:name.find('"')] + '"' + name[name.find('"')] + '"'
+        name = '"' + name[:name.find('"')] + '"' + name[name.find('"')] + '"'
     if location.find('"') != -1:
         location = '"' + location[:location.find('"')] + '"' + location[location.find('"')] + '"'
     if country.find('"') != -1:
         country = '"' + country[:country.find('"')] + '"' + country[country.find('"')] + '"'
     if description.find('"') != -1:
         description = '"' + description[:description.find('"')] + '"' + description[description.find('"')] + '"'
+
     item_entry = (id + columnSeparator
                   + name + columnSeparator
                   + category + columnSeparator
@@ -122,6 +123,9 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                   + description)
 
     seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating")
+    if seller_entry.find('"') != -1:
+        seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
+
     seller_set.add(seller_entry)
     bids = item.get("Bids", {})
     if bids is not None:
@@ -172,9 +176,6 @@ def parseJson(json_file, seller_set, bidder_set, bid_set, item_set):
             item_iterator(item, seller_set, bidder_set, bid_set, item_set)
 
 
-
-
-
 """
 Loops through each json files provided on the command line and passes each file
 to the parser
@@ -213,7 +214,6 @@ def main(argv):
     for item1 in item_set:
         items_file.write(item1 + '\n')
         pass
-
 
 
 if __name__ == '__main__':
