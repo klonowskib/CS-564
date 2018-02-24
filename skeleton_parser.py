@@ -143,10 +143,10 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         bidder = value.get("Bidder")
                         rating = bidder.get("Rating")
                         location = bidder.get("Location")
-                        if location is None:
+                        if rating is None:
                             rating = 'NULL'
-                            if location is None:
-                                location = 'NULL'
+                        if bidder is None:
+                            bidder = 'NULL'
                         if location is None:
                             location = 'NULL'
                         bidder_id = bidder.get("UserID")
