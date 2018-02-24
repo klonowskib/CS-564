@@ -81,7 +81,7 @@ def transformDollar(money):
 def item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set):
     id = item.get("ItemID")
     name = item.get("Name")
-    category = ''.join(item.get("Category"))
+    categories = ''.join(item.get("Category"))
     buy = item.get("Buy_Price")
     if (buy is None):
         buy = "NULL"
@@ -125,18 +125,18 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set)
 
     if seller_entry.find('"') != -1:
         seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
-
-    if category.find('"') != -1:
-        category = category[:category.find('"')] + '"' + category[category.find('"')]
-    category_entry = category + columnSeparator + id
-    category_set.add(category_entry)
+    if categories is not None:
+        for category in categories:
+            if category.find('"') != -1:
+                category = category[:category.find('"')] + '"' + category[category.find('"')]
+            category_entry = category + columnSeparator + id
+            category_set.add(category_entry)
 
     seller_set.add(seller_entry)
     bids = item.get("Bids", {})
     if bids is not None:
         for bid in bids:
             if bid is not None:
-
                 for key, value in bid.items():
                     for key, value in bid.items():
                         bidder = value.get("Bidder").get("UserID")
@@ -177,7 +177,7 @@ of the necessary SQL tables for your database.
 """
 
 
-def parseJson(json_file, seller_set, bidder_set, bid_set, item_set):
+def parseJson(json_file, seller_set, bidder_set, bid_set, item_set, category_set):
     with open(json_file, 'r') as f:
         items = loads(f.read())['Items']  # creates a Python dictionary of Items for the supplied json file
 
@@ -187,7 +187,7 @@ def parseJson(json_file, seller_set, bidder_set, bid_set, item_set):
             given `json_file' and generate the necessary .dat files to generate
             the SQL tables based on your relation design
             """
-            item_iterator(item, seller_set, bidder_set, bid_set, item_set)
+            item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set)
 
 
 """
@@ -216,7 +216,7 @@ def main(argv):
     bid_set = set()
     for f in argv[1:]:
         if isJson(f):
-            parseJson(f, seller_set, bidder_set, bid_set, item_set)
+            parseJson(f, seller_set, bidder_set, bid_set, item_set, category_set)
             print ("Success parsing " + f)
     for item1 in bidder_set:
         bidders_file.write(item1 + '\n')
