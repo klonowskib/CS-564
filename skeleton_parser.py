@@ -78,7 +78,7 @@ def transformDollar(money):
     return sub(r'[^\d.]', '', money)
 
 
-def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
+def item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set):
     id = item.get("ItemID")
     name = item.get("Name")
     category = ''.join(item.get("Category"))
@@ -126,6 +126,11 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
 
     if seller_entry.find('"') != -1:
         seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
+
+    if category.find('"') != -1:
+        category = category[:category.find('"')] + '"' + category[category.find('"')]
+    category_entry = category + columnSeparator + id
+    category_set.add(category_entry)
 
     seller_set.add(seller_entry)
     bids = item.get("Bids", {})
@@ -208,6 +213,7 @@ def main(argv):
     bidder_set = set()
     seller_set = set()
     item_set = set()
+    category_set = set()
     bid_set = set()
     for f in argv[1:]:
         if isJson(f):
