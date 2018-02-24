@@ -108,7 +108,6 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set)
 
     item_entry = (id + columnSeparator
                   + name + columnSeparator
-                  + category + columnSeparator
                   + transformDollar(currently) + columnSeparator
                   + transformDollar(buy) + columnSeparator
                   + transformDollar(first) + columnSeparator
