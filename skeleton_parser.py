@@ -151,6 +151,11 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         if country is None:
                             country = "NULL"
                         entry = location + columnSeparator + country + columnSeparator + bidder_id + columnSeparator + rating
+
+                        if entry.find('"') != -1:
+                            entry = entry[:entry.find('"')] + '"' + entry[
+                                entry.find('"')]
+
                         bidder_set.add(entry)
 
     item_set.add(item_entry)
