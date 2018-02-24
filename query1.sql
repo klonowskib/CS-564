@@ -1,0 +1,6 @@
+SELECT COUNT(UserID)
+FROM (
+  SELECT UserID FROM Bidders
+  UNION
+  SELECT UserID FROM Sellers
+)

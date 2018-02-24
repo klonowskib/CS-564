@@ -205,10 +205,12 @@ def main(argv):
     open('sellers.dat', 'w').close()
     open('bidders.dat', 'w').close()
     open('bids.dat', 'w').close()
+    open('category.dat', 'w').close()
     items_file = open('items.dat', 'a')
     sellers_file = open('sellers.dat', 'a')
     bidders_file = open('bidders.dat', 'a')
     bids_file = open('bids.dat', 'a')
+    category_file = open('category.dat', 'a')
     bidder_set = set()
     seller_set = set()
     item_set = set()
@@ -229,6 +231,8 @@ def main(argv):
     for item1 in item_set:
         items_file.write(item1 + '\n')
         pass
+    for item1 in category_set:
+        category_file.write(item1 + '\n')
 
 
 if __name__ == '__main__':

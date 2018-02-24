@@ -2,14 +2,16 @@ DROP TABLE IF EXISTS Items;
 DROP TABLE IF EXISTS Bidders;
 DROP TABLE IF EXISTS Bids;
 DROP TABLE IF EXISTS Sellers;
-CREATE TABLE Sellers (
+DROP TABLE IF EXISTS Categories;
+CREATE TABLE Sellers(
   UserID VARCHAR(255),
-  Rating int
+  Rating int,
+  Location varchar(255),
+  PRIMARY KEY (UserID)
    );
-CREATE TABLE Items (
+CREATE TABLE Items(
   ItemID int,
   Name VARCHAR(255),
-  Category VARCHAR(255),
   Currently REAL,
   Buy_Price REAL,
   First REAL,
@@ -38,11 +40,16 @@ CREATE TABLE Bidders(
   Rating int,
   PRIMARY KEY (UserID)
 );
+CREATE TABLE Categories(
+  Category varchar(255),
+  ItemID int
+);
 .separator |
 .import sellers.dat Sellers
 .import items.dat Items
 .import bidders.dat Bidders
 .import bids.dat Bids
+.import category.dat Categories
 
 
 

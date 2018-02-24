@@ -1,0 +1,3 @@
+SELECT COUNT(UserID)
+FROM Sellers
+WHERE Rating > 1000
