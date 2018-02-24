@@ -159,7 +159,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                             country = '"' + country[:country.find('"')] + '"' + country[country.find('"')] + '"'
 
                         entry = location + columnSeparator + country + columnSeparator + bidder + columnSeparator \
-                                + rating
+                                +  rating
 
                         bidder_set.add(entry)
 
