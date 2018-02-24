@@ -122,6 +122,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                   + transformDttm(ends) + columnSeparator
                   + description)
 
+
     seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating")
 
     if seller_entry.find('"') != -1:
@@ -141,7 +142,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         entry = (bidder + columnSeparator + transformDttm(time) + columnSeparator
                                  + transformDollar(amount) + columnSeparator + id)
                         bid_set.add(entry)
-
+                        bidder = value.get("Bidder")
                         rating = bidder.get("Rating")
                         location = bidder.get("Location")
                         if location is None:
@@ -151,15 +152,16 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         country = bidder.get("Country")
                         if country is None:
                             country = 'NULL'
-                        if bidder.find('"') != -1:
-                            bidder = '"' + bidder[:bidder.find('"')] + '"' + bidder[bidder.find('"')] + '"'
+                        if bidder_id.find('"') != -1:
+                            bidder_id = '"' + bidder_id[:bidder_id.find('"')] + '"' + bidder_id[bidder_id.find('"')] + '"'
                         if location.find('"') != -1:
                             location = '"' + location[:location.find('"')] + '"' + location[location.find('"')] + '"'
                         if country.find('"') != -1:
                             country = '"' + country[:country.find('"')] + '"' + country[country.find('"')] + '"'
 
-                        entry = location + columnSeparator + country + columnSeparator + bidder + columnSeparator \
-                                +  rating
+                        entry = location + columnSeparator + country + columnSeparator + bidder_id + columnSeparator + rating
+
+
 
                         bidder_set.add(entry)
 
