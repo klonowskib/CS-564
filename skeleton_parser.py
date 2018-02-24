@@ -23,10 +23,8 @@ you; the rest is up to you!
 Happy parsing!
 """
 
-import locale
 import sys
 from json import *
-from pprint import pprint
 from re import sub
 
 columnSeparator = "|"
@@ -122,8 +120,8 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                   + transformDttm(ends) + columnSeparator
                   + description)
 
-
-    seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating")
+    seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating") \
+                   + columnSeparator + location
 
     if seller_entry.find('"') != -1:
         seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
@@ -153,15 +151,14 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         if country is None:
                             country = 'NULL'
                         if bidder_id.find('"') != -1:
-                            bidder_id = '"' + bidder_id[:bidder_id.find('"')] + '"' + bidder_id[bidder_id.find('"')] + '"'
+                            bidder_id = '"' + bidder_id[:bidder_id.find('"')] + '"' + bidder_id[
+                                bidder_id.find('"')] + '"'
                         if location.find('"') != -1:
                             location = '"' + location[:location.find('"')] + '"' + location[location.find('"')] + '"'
                         if country.find('"') != -1:
                             country = '"' + country[:country.find('"')] + '"' + country[country.find('"')] + '"'
 
                         entry = location + columnSeparator + country + columnSeparator + bidder_id + columnSeparator + rating
-
-
 
                         bidder_set.add(entry)
 
