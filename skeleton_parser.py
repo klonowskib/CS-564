@@ -126,7 +126,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set)
     if seller_entry.find('"') != -1:
         seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
     if categories is not None:
-        for category in categories:
+        for category in categories.split(","):
             if category.find('"') != -1:
                 category = category[:category.find('"')] + '"' + category[category.find('"')]
             category_entry = category + columnSeparator + id
