@@ -81,7 +81,7 @@ def transformDollar(money):
 def item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set):
     id = item.get("ItemID")
     name = item.get("Name")
-    categories = ''.join(item.get("Category"))
+    categories = item.get("Category")
     buy = item.get("Buy_Price")
     if (buy is None):
         buy = "NULL"
@@ -126,7 +126,8 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set)
     if seller_entry.find('"') != -1:
         seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
     if categories is not None:
-        for category in categories.split(","):
+        print categories
+        for category in categories:
             if category.find('"') != -1:
                 category = category[:category.find('"')] + '"' + category[category.find('"')]
             category_entry = category + columnSeparator + id
