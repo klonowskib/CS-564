@@ -123,6 +123,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                   + description)
 
     seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating")
+
     if seller_entry.find('"') != -1:
         seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
 
@@ -131,6 +132,8 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
     if bids is not None:
         for bid in bids:
             if bid is not None:
+
+                for key, value in bid.items():
                     for key, value in bid.items():
                         bidder = value.get("Bidder").get("UserID")
                         time = value.get("Time")
@@ -138,7 +141,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         entry = (bidder + columnSeparator + transformDttm(time) + columnSeparator
                                  + transformDollar(amount) + columnSeparator + id)
                         bid_set.add(entry)
-                        bidder = value.get("Bidder")
+
                         rating = bidder.get("Rating")
                         location = bidder.get("Location")
                         if location is None:
@@ -148,10 +151,15 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         country = bidder.get("Country")
                         if country is None:
                             country = 'NULL'
-                        entry = location + columnSeparator + country + columnSeparator + bidder_id + columnSeparator + rating
+                        if bidder.find('"') != -1:
+                            bidder = '"' + bidder[:bidder.find('"')] + '"' + bidder[bidder.find('"')] + '"'
+                        if location.find('"') != -1:
+                            location = '"' + location[:location.find('"')] + '"' + location[location.find('"')] + '"'
+                        if country.find('"') != -1:
+                            country = '"' + country[:country.find('"')] + '"' + country[country.find('"')] + '"'
 
-                        if entry.find('"') != -1:
-                            entry = '"' + entry + '"'
+                        entry = location + columnSeparator + country + columnSeparator + bidder + columnSeparator \
+                                + rating
 
                         bidder_set.add(entry)
 
