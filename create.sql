@@ -3,25 +3,46 @@ DROP TABLE IF EXISTS Bidders;
 DROP TABLE IF EXISTS Bids;
 DROP TABLE IF EXISTS Sellers;
 CREATE TABLE Sellers (
-  Rating int,
-  UserID VARCHAR(255)
+  UserID VARCHAR(255),
+  Rating int
    );
 CREATE TABLE Items (
-  ItemID VARCHAR(255),
+  ItemID int,
   Name VARCHAR(255),
   Category VARCHAR(255),
-  Currently VARCHAR(255),
-  Buy_Price VARCHAR(255),
-  First VARCHAR(255),
+  Currently REAL,
+  Buy_Price REAL,
+  First REAL,
   Number int,
   Seller VARCHAR(255),
   Location VARCHAR(255),
   Country VARCHAR(255),
   Started VARCHAR(255),
-  Ends VARCHAR(255)
+  Ends VARCHAR(255),
+  Description VARCHAR(10000),
+  PRIMARY KEY (ItemID),
+  FOREIGN KEY (Seller) REFERENCES Sellers(UserID)
   );
+CREATE TABLE Bids(
+  Bidder VARCHAR(255),
+  Time VARCHAR(255),
+  Amount REAL,
+  ItemID int,
+  FOREIGN KEY (Bidder) REFERENCES Bidders(UserID),
+  FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
+);
+CREATE TABLE Bidders(
+  Location varchar(255),
+  Country varchar(255),
+  UserID varchar(255),
+  Rating int,
+  PRIMARY KEY (UserID)
+);
 .separator |
-.import /Users/benklonowski/PycharmProjects/PP1/sellers.dat Sellers
-DELETE  FROM Sellers WHERE Rating = 10;
-SELECT * FROM Sellers;
+.import sellers.dat Sellers
+.import items.dat Items
+.import bidders.dat Bidders
+.import bids.dat Bids
+
+
 
