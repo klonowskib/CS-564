@@ -144,6 +144,10 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         rating = bidder.get("Rating")
                         location = bidder.get("Location")
                         if location is None:
+                            rating = 'NULL'
+                            if location is None:
+                                location = 'NULL'
+                        if location is None:
                             location = 'NULL'
                         bidder_id = bidder.get("UserID")
 
@@ -153,8 +157,8 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
                         entry = location + columnSeparator + country + columnSeparator + bidder_id + columnSeparator + rating
 
                         if entry.find('"') != -1:
-                            entry = entry[:entry.find('"')] + '"' + entry[
-                                entry.find('"')]
+                            entry = '"' + entry[:entry.find('"')] + '"' + entry[entry.find('"')] + '"'
+
 
                         bidder_set.add(entry)
 
