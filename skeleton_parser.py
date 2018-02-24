@@ -126,7 +126,6 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set, category_set)
     if seller_entry.find('"') != -1:
         seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
     if categories is not None:
-        print categories
         for category in categories:
             if category.find('"') != -1:
                 category = category[:category.find('"')] + '"' + category[category.find('"')]
