@@ -44,12 +44,3 @@ CREATE TABLE Categories(
   Category varchar(255),
   ItemID int
 );
-.separator |
-.import sellers.dat Sellers
-.import items.dat Items
-.import bidders.dat Bidders
-.import bids.dat Bids
-.import category.dat Categories
-
-
-

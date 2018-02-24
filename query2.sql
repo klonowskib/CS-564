@@ -1,4 +1,4 @@
-SELECT COUNT(UserID), Location
+SELECT COUNT(UserID)
 FROM (
   SELECT UserID, Location FROM Bidders
   UNION
