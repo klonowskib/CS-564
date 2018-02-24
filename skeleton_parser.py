@@ -123,6 +123,7 @@ def item_iterator(item, seller_set, bidder_set, bid_set, item_set):
     seller_entry = seller_entry.get("UserID") + columnSeparator + seller_entry.get("Rating") \
                    + columnSeparator + location
 
+
     if seller_entry.find('"') != -1:
         seller_entry = seller_entry[:seller_entry.find('"')] + '"' + seller_entry[seller_entry.find('"')]
 
